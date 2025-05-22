@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню столовой</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="datetime-box" id="datetime-box"></div>
+    <header>
+        <h1>Меню столовой на сегодня</h1>
+    </header>
+    <main>
+        <div class="menu-container">
+            {% for item in menu %}
+            <div class="menu-item">
+                <h2>{{ item.dish.name }}</h2>
+                <p>{{ item.dish.description }}</p>
+                <p>Цена: {{ "{:.2f}".format(item.dish.price) }} ₽</p>
+                <p>Категория: {{ item.dish.category }}</p>
+            </div>
+            {% else %}
+            <p>На сегодня нет доступных блюд.</p>
+            {% endfor %}
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        function updateDateTimeBox() {
+            const box = document.getElementById('datetime-box');
+            if (!box) return;
+            const now = new Date();
+            const options = {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            };
+            box.textContent = now.toLocaleString('ru-RU', options);
+        }
+        setInterval(updateDateTimeBox, 1000);
+        updateDateTimeBox();
+    </script>
+</body>
+</html>
